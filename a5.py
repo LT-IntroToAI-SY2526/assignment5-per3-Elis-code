@@ -1,4 +1,5 @@
 import copy  # to make a deepcopy of the board
+import time
 from typing import List, Any, Tuple
 
 # import Stack and Queue classes for BFS/DFS
@@ -190,17 +191,24 @@ def DFS(state: Board) -> Board:
     """
     the_stack = Stack()
     the_stack.push(state)
+    iterations = 0  # ADD THIS LINE
+    start_time = time.time()  # ADD THIS LINE
+
 
     while not the_stack.is_empty():
         current_board: Board = the_stack.pop()
-        # print(current_board)
+        iterations += 1  # ADD THIS LINE
+
         if current_board.goal_test():
+            end_time = time.time()  # ADD THIS LINE
+            elapsed_time = end_time - start_time  # ADD THIS LINE
+            print(f"DFS took {iterations} iterations in {elapsed_time:.4f} seconds")  # ADD THIS LINE
             return current_board
         if not current_board.failure_test():
             row, col = current_board.find_most_constrained_cell()
-            print(row, col)
+            #print(row, col)
             possible_values = current_board.rows[row][col]
-            print(possible_values)
+            #print(possible_values)
             for val in possible_values:
                 new_board: Board = copy.deepcopy(current_board)
                 new_board.update(row, col, val)
@@ -219,12 +227,19 @@ def BFS(state: Board) -> Board:
         either None in the case of invalid input or a solved board
     """
     the_queue = Queue()
-    the_queue.push(state)  
+    the_queue.push(state)
+    iterations = 0  # ADD THIS LINE
+    start_time = time.time()  # ADD THIS LINE
+
 
     while not the_queue.is_empty():
+        iterations += 1  # ADD THIS LINE
         current_board: Board = the_queue.pop()  
 
         if current_board.goal_test():
+            end_time = time.time()  # ADD THIS LINE
+            elapsed_time = end_time - start_time  # ADD THIS LINE
+            print(f"BFS took {iterations} iterations in {elapsed_time:.4f} seconds")  # ADD THIS LINE
             return current_board  
 
         if not current_board.failure_test():
@@ -320,6 +335,36 @@ if __name__ == "__main__":
         (8, 3, 8),
         (8, 5, 7),
         (8, 7, 5),
+    ]
+    new_board = [
+    (0, 0, 5),
+    (0, 4, 3),
+    (0, 6, 7),
+    (1, 1, 6),
+    (1, 3, 1),
+    (1, 7, 9),
+    (2, 2, 9),
+    (2, 5, 6),
+    (2, 8, 3),
+    (3, 0, 8),
+    (3, 4, 2),
+    (3, 7, 4),
+    (4, 1, 7),
+    (4, 3, 5),
+    (4, 5, 1),
+    (4, 7, 3),
+    (5, 1, 1),
+    (5, 4, 9),
+    (5, 8, 6),
+    (6, 0, 9),
+    (6, 3, 6),
+    (6, 6, 1),
+    (7, 1, 5),
+    (7, 5, 8),
+    (7, 7, 7),
+    (8, 2, 6),
+    (8, 4, 4),
+    (8, 8, 2), 
     ]
     #Create a sudoku board.
     b = Board()
